@@ -3,7 +3,6 @@
 elves = []
 inventory = []
 ans = 0
-elf = 0
 
 # read given input into python
 with open('input.txt') as input_text:
