@@ -1,5 +1,5 @@
 # read given input into python
-with open('test.txt') as input_text:
+with open('input.txt') as input_text:
     trees = [[int(t) for t in text.strip()] for text in input_text.readlines()]
     print(trees)
 
@@ -25,7 +25,7 @@ for x in range(1, rows - 1):
             visible.add((x,y))
         # check down
         flag = True
-        for i in range(x, rows):
+        for i in range(x+1, rows):
             if tree <= trees[i][y]:
                 flag = False
                 break
