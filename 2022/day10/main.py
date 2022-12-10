@@ -9,20 +9,21 @@ with open('input.txt') as input_text:
 x = 1
 cycle = 0
 values = {}
+checkpoints = (20, 60, 100, 140, 180, 220)
+signal_strength = 0
 for operation in instructions:
     match operation:
         case [_, value]:
             cycle += 1
-            values[cycle] = (x, x * cycle)
+            values[cycle] = x
             cycle += 1
-            values[cycle] = (x, x * cycle)
+            values[cycle] = x
             x += int(value)
         case _:
             cycle += 1
-            values[cycle] = (x, x * cycle)
+            values[cycle] = x
 
-checkpoints = (20, 60, 100, 140, 180, 220)
-signal_strength = 0
-for checkpoint in checkpoints:
-    signal_strength += values[checkpoint][1]
+for cycle in checkpoints:
+    signal_strength += values[cycle] * cycle
 print(signal_strength)
+
