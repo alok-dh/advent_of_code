@@ -27,3 +27,17 @@ for cycle in checkpoints:
     signal_strength += values[cycle] * cycle
 print(signal_strength)
 
+# Part 2
+# Render the image given by your program.
+# What eight capital letters appear on your CRT?
+crt = [['.' for x in range(40)] for y in range(6)]
+for cycle in values:
+    x = values[cycle]
+    y = cycle - 1
+    row = cycle // 40
+    col = y - (row * 40)
+    if y % 40 in (x - 1, x, x + 1):
+        crt[row][col] = '#'
+for pixel in crt:
+    print(''.join(pixel))
+
