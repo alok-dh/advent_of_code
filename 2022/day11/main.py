@@ -7,29 +7,25 @@ with open('test.txt') as input_text:
     text = [[m.strip() for m in line.split('\n')] for line in input_text.read().split('\n\n')]
     print(text)
 
-operatorlookup = {
-    '+': operator.add,
-    '-': operator.sub,
-    '*': operator.mul,
-    '/': operator.truediv
-}
 
 class Operation:
 
-    def __init__(self, operation: str, x: int) -> int:
+    def __init__(self, operation: str, x) -> int:
         self.x = x
         self.operation = operation
 
     def do_operation(self, old):
+        if self.operation == x:
+            self.x = old
         match self.operation:
             case '+':
-                return operator.add(old, self.x)
+                return operator.add(old, int(self.x))
             case '-':
-                return operator.sub(old, self.x)
+                return operator.sub(old, int(self.x))
             case '*':
-                return operator.mul(old, self.x)
+                return operator.mul(old, int(self.x))
             case '/':
-                return operator.truediv(old, self.x)
+                return operator.truediv(old, int(self.x))
 
 
 class Monkey:
@@ -53,12 +49,13 @@ class Monkey:
 monkeys = defaultdict()
 for monke in text:
     for m in monke:
+        number, items, operation, test, t, f = None, None, None, None, None, None
         print(m.strip(':').split())
         match m.strip(':').split():
             case 'Monkey', num:
                 number = int(num)
             case 'Operation:', _, '=', _, op, x:
-                op = Operation(op, int(x))
+                operation = Operation(op, x)
             case 'Test:', _, _, x:
                 test = int(x)
             case 'If', 'true:', _, _, _, i:
@@ -66,18 +63,7 @@ for monke in text:
             case 'If', 'false:', _, _, _, i:
                 f = int(i)
             case other:
-                print(m)
                 items = [int(i) for i in re.findall('\d\d', m)]
-                print(items)
-
-        print(m.strip(':').split())
-
-
-
-
-#     num = [int(i) for i in re.findall('\d', monke[0])]
-#     items = [int(i) for i in re.findall('\d\d', monke[1])]
-#
-#     monkeys[num[0]] = Monkey(num[0], items)
-# for m in monkeys:
-#     print(monkeys[m])
+        monkeys[number] = Monkey(number, items, operation, test, t, f)
+for m in monkeys:
+    print(monkeys[m])
