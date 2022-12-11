@@ -13,18 +13,18 @@ class Operation:
         self.operation = operation
 
     def do_operation(self, old):
-        x = self.x
+        new_x = self.x
         if self.x == 'old':
-            x = old
+            new_x = old
         match self.operation:
             case '+':
-                return old + int(x)
+                return old + int(new_x)
             case '-':
-                return old - int(x)
+                return old - int(new_x)
             case '*':
-                return old * int(x)
+                return old * int(new_x)
             case '/':
-                return old // int(x)
+                return old // int(new_x)
 
     def __str__(self):
         return f"{self.operation} {self.x}"
@@ -69,9 +69,9 @@ for monke in text:
                 items = [int(i) for i in re.findall('\d\d', m)]
     monkeys[number] = Monkey(number, items, operation, test, t, f)
 
-# for monkey in monkeys:
-#     print(monkey.__dict__)
-#     print(monkey.operation)
+for monkey in monkeys:
+    print(monkey.__dict__)
+    print(monkey.operation)
 
 for _ in range(20):
     for m in monkeys:
@@ -81,7 +81,7 @@ for _ in range(20):
             m.inspect()
             worry = m.operation.do_operation(worry)
             worry = worry // 3
-            if worry % m.test == 0:
+            if (worry % m.test) == 0:
                 monkeys[m.t].update_items(worry)
             else:
                 monkeys[m.f].update_items(worry)
