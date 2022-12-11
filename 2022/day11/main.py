@@ -15,7 +15,7 @@ class Operation:
         self.operation = operation
 
     def do_operation(self, old):
-        if self.operation == x:
+        if self.x == 'old':
             self.x = old
         match self.operation:
             case '+':
@@ -46,11 +46,10 @@ class Monkey:
 
 
 # construct a monke
-monkeys = defaultdict()
+monkeys = [Monkey for i in range(len(text))]
 for monke in text:
+    number, items, operation, test, t, f = None, None, None, None, None, None
     for m in monke:
-        number, items, operation, test, t, f = None, None, None, None, None, None
-        print(m.strip(':').split())
         match m.strip(':').split():
             case 'Monkey', num:
                 number = int(num)
@@ -64,6 +63,25 @@ for monke in text:
                 f = int(i)
             case other:
                 items = [int(i) for i in re.findall('\d\d', m)]
-        monkeys[number] = Monkey(number, items, operation, test, t, f)
-for m in monkeys:
-    print(monkeys[m])
+    monkeys[number] = Monkey(number, items, operation, test, t, f)
+
+for monkey in monkeys:
+    print(monkey)
+
+for i in range(20):
+    for m in monkeys:
+        if len(m.items) == 0: continue
+        worry = m.items.pop(0)
+        worry = m.operation.do_operation(worry)
+        worry = worry // 3
+        if worry // m.test:
+            monkeys[m.t].items.append(worry)
+        else:
+            monkeys[m.f].items.append(worry)
+
+for monkey in monkeys:
+    print(monkey.items)
+
+
+
+
