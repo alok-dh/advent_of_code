@@ -1,4 +1,6 @@
+import math
 import re
+from copy import deepcopy
 
 # read given input into python
 with open('input.txt') as input_text:
@@ -62,10 +64,13 @@ for monke in text:
                 items = [int(i) for i in re.findall('\d\d', m)]
     monkeys[number] = Monkey(number, items, operation, test, t, f)
 
+monke_part_two = deepcopy(monkeys)
+# Part 1
+# Figure out which monkeys to chase by counting how many items they inspect over 20 rounds.
+# What is the level of monkey business after 20 rounds of stuff-slinging simian shenanigans?
 for _ in range(20):
     for m in monkeys:
-        while True:
-            if len(m.items) == 0: break
+        while len(m.items) > 0:
             worry = m.items.pop(0)
             m.inspected += 1
             worry = m.operation.do_operation(worry)
@@ -79,4 +84,27 @@ active_monkeys = sorted([m.inspected for m in monkeys])
 print(active_monkeys)
 print(active_monkeys[-2] * active_monkeys[-1])
 
+# Part 2
+# Worry levels are no longer divided by three after each item is inspected;
+# you'll need to find another way to keep your worry levels manageable.
+# Starting again from the initial state in your puzzle input,
+# what is the level of monkey business after 10000 rounds?
+divisors = [d.test for d in monke_part_two]
+lcm = math.lcm(*divisors)
+bignumber = 0
+for _ in range(10000):
+    for m in monke_part_two:
+        while len(m.items) > 0:
+            bignumber = m.items.pop(0)
+            m.inspected += 1
+            bignumber = m.operation.do_operation(bignumber)
+            bignumber %= lcm
+            if (bignumber % m.test) == 0:
+                monke_part_two[m.t].update_items(bignumber)
+            else:
+                monke_part_two[m.f].update_items(bignumber)
+
+active_monkeys = sorted([m.inspected for m in monke_part_two])
+print(active_monkeys)
+print(active_monkeys[-2] * active_monkeys[-1])
 
