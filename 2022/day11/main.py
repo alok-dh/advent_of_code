@@ -26,9 +26,6 @@ class Operation:
             case '/':
                 return old // int(new_x)
 
-    def __str__(self):
-        return f"{self.operation} {self.x}"
-
 
 class Monkey:
 
@@ -44,16 +41,12 @@ class Monkey:
     def update_items(self, item):
         self.items.append(item)
 
-    def inspect(self):
-        self.inspected += 1
-
 
 # construct a monke
 monkeys: list[Monkey] = [Monkey for i in range(len(text))]
 for monke in text:
     number, items, operation, test, t, f = None, None, None, None, None, None
     for m in monke:
-        print(m)
         match m.strip(':').split():
             case 'Monkey', num:
                 number = int(num)
@@ -69,16 +62,12 @@ for monke in text:
                 items = [int(i) for i in re.findall('\d\d', m)]
     monkeys[number] = Monkey(number, items, operation, test, t, f)
 
-for monkey in monkeys:
-    print(monkey.__dict__)
-    print(monkey.operation)
-
 for _ in range(20):
     for m in monkeys:
         while True:
             if len(m.items) == 0: break
             worry = m.items.pop(0)
-            m.inspect()
+            m.inspected += 1
             worry = m.operation.do_operation(worry)
             worry = worry // 3
             if (worry % m.test) == 0:
