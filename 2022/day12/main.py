@@ -8,4 +8,10 @@ with open('test.txt') as input_text:
 
 elevation = string.ascii_lowercase
 print(heightmap)
-print(elevation) 
+print(elevation)
+
+class Node():
+
+    def __init__(self, value: chr, children: list):
+        self.value = value
+        self.children = children
