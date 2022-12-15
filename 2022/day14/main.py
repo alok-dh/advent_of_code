@@ -1,4 +1,4 @@
-with open('test.txt') as input_text:
+with open('input.txt') as input_text:
     lines = [line.split(' -> ') for line in input_text.read().strip().splitlines()]
     print(lines)
     coords = [[tuple(map(int, l.split(","))) for l in line] for line in lines]
@@ -23,7 +23,7 @@ for cord in coords:
 source = (500, 0)
 current = source
 max_y = max_y + 2
-for i in range(max_x - min_x): cave.add((min_x + i, max_y))
+for i in range(min_x - min_x//2, max_x + max_x//2): cave.add((i, max_y))
 print(sorted(cave))
 num_rocks = len(cave)
 while current[1] < max_y:
