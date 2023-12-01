@@ -3,10 +3,8 @@ import math
 import string
 from collections import defaultdict, deque
 
-with open('test.txt') as input_text:
-    # instructions = [pair.strip().split(" ") for pair in input_text.readlines()]
+with open('input.txt') as input_text:
     heightmap = [line.strip() for line in input_text.readlines()]
-    # heightmap = input_text.read()
     print(heightmap)
 
 
@@ -75,3 +73,63 @@ while seen:
                 current.dist = n.dist
 
 print(shortest)
+
+from collections import deque
+
+def find_shortest_path(grid, start, goal):
+    # Create a queue to store the paths being explored
+    queue = deque([[start]])
+
+    # Create a set to track the squares that have been visited
+    visited = set()
+
+    # While the queue is not empty
+    while queue:
+        # Remove the first path from the queue
+        path = queue.popleft()
+        # Get the last square on the path
+        square = path[-1]
+        # If the square is the goal, return the path
+        if square == goal:
+            return path
+        # Otherwise, mark the square as visited
+        visited.add(square)
+        # Generate the next set of possible paths by exploring all the squares
+        # that are reachable from the current square and have an elevation of a or one higher
+        for next_square in get_reachable_squares(grid, square):
+            if next_square not in visited:
+                queue.append(path + [next_square])
+    # If the queue becomes empty and no solution has been found, return "No solution found"
+    return "No solution found"
+
+def get_reachable_squares(grid, square):
+    # Get the row and column indices of the current square
+    row, col = square
+    # Initialize a list to store the reachable squares
+    reachable_squares = []
+    # Check the squares to the left, right, top, and bottom of the current square
+    for dx, dy in [[-1, 0], [1, 0], [0, -1], [0, 1]]:
+        # Calculate the row and column indices of the next square
+        next_row, next_col = row + dx, col + dy
+        # If the next square is within the bounds of the grid, add it to the list of reachable squares
+        if (0 <= next_row < len(grid)) and (0 <= next_col < len(grid[0])):
+            reachable_squares.append((next_row, next_col))
+    return reachable_squares
+
+# Example usage
+# grid = [
+#     'Sabqponm',
+#     'abcryxxl',
+#     'accszExk',
+#     'acctuvwj',
+#     'abdefghi'
+# ]
+# # Find the indices of the start and goal squares
+# for i, row in enumerate(heightmap):
+#     for j, square in enumerate(row):
+#         if square == 'S':
+#             start = (i, j)
+#         elif square == 'E':
+#             goal = (i, j)
+shortest_path = find_shortest_path(heightmap, start.xy, end.xy)
+print(len(shortest_path))
